@@ -14,6 +14,7 @@ import (
 // saves the default seccomp profile as a json file so people can use it as a
 // base for their own custom profiles
 func main() {
+	// 获取当前文件所在的路径
 	wd, err := os.Getwd()
 	if err != nil {
 		panic(err)

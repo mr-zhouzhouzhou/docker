@@ -35,6 +35,7 @@ var (
 	// volumeNameRegex ensures the name assigned for the volume is valid.
 	// This name is used to create the bind directory, so we need to avoid characters that
 	// would make the path to escape the root directory.
+	// 正则匹配
 	volumeNameRegex = names.RestrictedNamePattern
 )
 
@@ -47,19 +48,20 @@ type activeMount struct {
 // is the base path that the Root instance uses to store its
 // volumes. The base path is created here if it does not exist.
 func New(scope string, rootIdentity idtools.Identity) (*Root, error) {
+	//  python 中也有类似的东西， 可以追加路径
 	rootDirectory := filepath.Join(scope, volumesPathName)
-
+	//  创建文件夹并且添加权限
 	if err := idtools.MkdirAllAndChown(rootDirectory, 0700, rootIdentity); err != nil {
 		return nil, err
 	}
 
 	r := &Root{
-		scope:        scope,
-		path:         rootDirectory,
-		volumes:      make(map[string]*localVolume),
-		rootIdentity: rootIdentity,
+		scope:        scope,//作用域
+		path:         rootDirectory,//路径
+		volumes:      make(map[string]*localVolume),// key:value
+		rootIdentity: rootIdentity,// root身份
 	}
-
+//读取文件
 	dirs, err := ioutil.ReadDir(rootDirectory)
 	if err != nil {
 		return nil, err
@@ -349,6 +351,9 @@ func (v *localVolume) Status() map[string]interface{} {
 }
 
 // getAddress finds out address/hostname from options
+
+
+// 获取IP地址
 func getAddress(opts string) string {
 	optsList := strings.Split(opts, ",")
 	for i := 0; i < len(optsList); i++ {
