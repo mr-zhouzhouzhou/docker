@@ -10,6 +10,7 @@ import (
 
 // Frame represents a program counter inside a stack frame.
 type Frame uintptr
+//  基本数据类型 也可以实现接口的
 
 // pc returns the program counter for this frame;
 // multiple frames may have the same PC value.
@@ -130,6 +131,9 @@ func (s *stack) StackTrace() StackTrace {
 	return f
 }
 
+
+
+//  不知道  是干嘛的
 func callers() *stack {
 	const depth = 32
 	var pcs [depth]uintptr
@@ -138,6 +142,8 @@ func callers() *stack {
 	return &st
 }
 
+
+// 这个代码 也太简洁 了吧
 // funcname removes the path prefix component of a function's name reported by func.Name().
 func funcname(name string) string {
 	i := strings.LastIndex(name, "/")

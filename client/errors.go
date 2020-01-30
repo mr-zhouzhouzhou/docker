@@ -16,6 +16,7 @@ type errConnectionFailed struct {
 
 // Error returns a string representation of an errConnectionFailed
 func (err errConnectionFailed) Error() string {
+	//
 	if err.host == "" {
 		return "Cannot connect to the Docker daemon. Is the docker daemon running on this host?"
 	}
@@ -23,6 +24,7 @@ func (err errConnectionFailed) Error() string {
 }
 
 // IsErrConnectionFailed returns true if the error is caused by connection failed.
+//
 func IsErrConnectionFailed(err error) bool {
 	_, ok := errors.Cause(err).(errConnectionFailed)
 	return ok
@@ -130,6 +132,7 @@ func IsErrNotImplemented(err error) bool {
 
 // NewVersionError returns an error if the APIVersion required
 // if less than the current supported version
+//  如果要求的API版本低于现有的版本的话，会报错
 func (cli *Client) NewVersionError(APIrequired, feature string) error {
 	if cli.version != "" && versions.LessThan(cli.version, APIrequired) {
 		return fmt.Errorf("%q requires API version %s, but the Docker daemon API version is %s", feature, APIrequired, cli.version)

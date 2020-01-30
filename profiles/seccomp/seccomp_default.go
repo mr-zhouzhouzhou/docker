@@ -40,6 +40,7 @@ func arches() []types.Architecture {
 	}
 }
 
+// seccomp是一种沙箱机制，这里就是加载默认的沙箱配置文件
 // DefaultProfile defines the whitelist for the default seccomp profile.
 func DefaultProfile() *types.Seccomp {
 	syscalls := []*types.Syscall{
@@ -358,14 +359,17 @@ func DefaultProfile() *types.Seccomp {
 				"write",
 				"writev",
 			},
-			Action: types.ActAllow,
+			Action: types.ActAllow,//执行被允许
 			Args:   []*types.Arg{},
 		},
 		{
 			Names:  []string{"ptrace"},
+			//Ptrace 提供了一种父进程可以控制子进程运行，并可以检查和改变它的核心image。
+			//它主要用于实现断点调试。一个被跟踪的进程运行中，直到发生一个信号。则进程被中止，并且通知其父进程。
+			//在进程中止的状态下，进程的内存空间可以被读写。父进程还可以使子进程继续执行，并选择是否是否忽略引起中止的信号
 			Action: types.ActAllow,
 			Includes: types.Filter{
-				MinKernel: "4.8",
+				MinKernel: "4.8",//最小内核4.8
 			},
 		},
 		{
@@ -413,7 +417,7 @@ func DefaultProfile() *types.Seccomp {
 			},
 		},
 		{
-			Names:  []string{"personality"},
+			Names:  []string{"personality"},//不知道干嘛用的
 			Action: types.ActAllow,
 			Args: []*types.Arg{
 				{
@@ -667,7 +671,7 @@ func DefaultProfile() *types.Seccomp {
 	}
 
 	return &types.Seccomp{
-		DefaultAction: types.ActErrno,
+		DefaultAction: types.ActErrno,//SCMP_ACT_ERRNO，执行不报错吗？
 		ArchMap:       arches(),
 		Syscalls:      syscalls,
 	}

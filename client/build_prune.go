@@ -12,6 +12,8 @@ import (
 )
 
 // BuildCachePrune requests the daemon to delete unused cache data
+//  向daemon请求，删除一些没有被用到的缓存
+//prune 是删除的意思
 func (cli *Client) BuildCachePrune(ctx context.Context, opts types.BuildCachePruneOptions) (*types.BuildCachePruneReport, error) {
 	if err := cli.NewVersionError("1.31", "build prune"); err != nil {
 		return nil, err

@@ -26,7 +26,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
+	// 这里是覆盖掉default.json 文件，可能是不同的版本，需要的参数不一致吧
 	if err := ioutil.WriteFile(f, b, 0644); err != nil {
 		panic(err)
 	}

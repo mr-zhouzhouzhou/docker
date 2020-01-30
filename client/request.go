@@ -263,6 +263,8 @@ func encodeData(data interface{}) (*bytes.Buffer, error) {
 
 func ensureReaderClosed(response serverResponse) {
 	if response.body != nil {
+		//drag up 拉上， 拔出；把孩子拉扯大；故意重提旧事
+		//
 		// Drain up to 512 bytes and close the body to let the Transport reuse the connection
 		io.CopyN(ioutil.Discard, response.body, 512)
 		response.body.Close()

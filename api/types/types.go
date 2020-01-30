@@ -613,5 +613,5 @@ type BuildCache struct {
 type BuildCachePruneOptions struct {
 	All         bool
 	KeepStorage int64
-	Filters     filters.Args
+	Filters     filters.Args  //  这是一个map    map[string]map[string]bool
 }

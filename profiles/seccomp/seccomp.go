@@ -20,12 +20,16 @@ func GetDefaultProfile(rs *specs.Spec) (*specs.LinuxSeccomp, error) {
 	return setupSeccomp(DefaultProfile(), rs)
 }
 
+
+
+//加载文件，将json字符串变成结构体
 // LoadProfile takes a json string and decodes the seccomp profile.
 func LoadProfile(body string, rs *specs.Spec) (*specs.LinuxSeccomp, error) {
 	var config types.Seccomp
 	if err := json.Unmarshal([]byte(body), &config); err != nil {
 		return nil, fmt.Errorf("Decoding seccomp profile failed: %v", err)
 	}
+	// rs 就是走一趟，啥也，没干
 	return setupSeccomp(&config, rs)
 }
 
@@ -72,7 +76,7 @@ func setupSeccomp(config *types.Seccomp, rs *specs.Spec) (*specs.LinuxSeccomp, e
 		return nil, errors.New("'architectures' and 'archMap' were specified in the seccomp profile, use either 'architectures' or 'archMap'")
 	}
 
-	// if config.Architectures == 0 then libseccomp will figure out the architecture to use
+	// if config.Architectures == 0 then libseccomp will figure out（计算出） the architecture to use
 	if len(config.Architectures) != 0 {
 		for _, a := range config.Architectures {
 			newConfig.Architectures = append(newConfig.Architectures, specs.Arch(a))
@@ -97,7 +101,7 @@ func setupSeccomp(config *types.Seccomp, rs *specs.Spec) (*specs.LinuxSeccomp, e
 	newConfig.DefaultAction = specs.LinuxSeccompAction(config.DefaultAction)
 
 Loop:
-	// Loop through all syscall blocks and convert them to libcontainer format after filtering them
+	// Loop through all syscall blocks and convert them to libcontainer format after filtering them  过滤
 	for _, call := range config.Syscalls {
 		if len(call.Excludes.Arches) > 0 {
 			if inSlice(call.Excludes.Arches, arch) {
@@ -174,6 +178,9 @@ func createSpecsSyscall(names []string, action types.Action, args []*types.Arg) 
 
 var currentKernelVersion *kernel.VersionInfo
 
+
+
+//  内核相关的信息
 func kernelGreaterEqualThan(v string) (bool, error) {
 	version, err := kernel.ParseRelease(v)
 	if err != nil {

@@ -35,6 +35,7 @@ type profileData struct {
 
 // generateDefault creates an apparmor profile from ProfileData.
 func (p *profileData) generateDefault(out io.Writer) error {
+	//  标准输出
 	compiled, err := template.New("apparmor_profile").Parse(baseTemplate)
 	if err != nil {
 		return err
@@ -61,6 +62,7 @@ func (p *profileData) generateDefault(out io.Writer) error {
 
 // macrosExists checks if the passed macro exists.
 func macroExists(m string) bool {
+	// 检查文件是否存在
 	_, err := os.Stat(path.Join(profileDirectory, m))
 	return err == nil
 }
@@ -92,6 +94,7 @@ func InstallDefault(name string) error {
 	p.DaemonProfile = daemonProfile
 
 	// Install to a temporary directory.
+	//读取文件，生成临时目录/文件
 	f, err := ioutil.TempFile("", name)
 	if err != nil {
 		return err

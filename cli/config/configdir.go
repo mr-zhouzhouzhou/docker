@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	configDir     = os.Getenv("DOCKER_CONFIG")
+	configDir     = os.Getenv("DOCKER_CONFIG")//获取环境变量
 	configFileDir = ".docker"
 )
 
@@ -22,6 +22,7 @@ func Dir() string {
 
 func init() {
 	if configDir == "" {
+		//添加路径
 		configDir = filepath.Join(homedir.Get(), configFileDir)
 	}
 }

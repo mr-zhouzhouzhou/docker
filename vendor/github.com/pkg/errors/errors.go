@@ -90,6 +90,10 @@
 // considered a part of its stable public interface.
 //
 // See the documentation for Frame.Format for more details.
+
+
+//Go语言(golang)的错误(error)处理的方案
+//url： https://blog.csdn.net/yonggeit/article/details/86519117
 package errors
 
 import (
@@ -115,8 +119,9 @@ func Errorf(format string, args ...interface{}) error {
 		stack: callers(),
 	}
 }
-
+// stack是堆栈的意思
 // fundamental is an error that has a message and a stack, but no caller.
+//type stack []uintptr
 type fundamental struct {
 	msg string
 	*stack

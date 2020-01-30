@@ -41,6 +41,8 @@ const (
 	ArchS390X       Arch = "SCMP_ARCH_S390X"
 )
 
+
+// 这写的是啥？
 // Action taken upon Seccomp rule match
 type Action string
 
@@ -82,13 +84,22 @@ type Filter struct {
 	MinKernel string   `json:"minKernel,omitempty"`
 }
 
+
+
+//  Syscall  这是系统调用
 // Syscall is used to match a group of syscalls in Seccomp
+//seccomp 是 secure computing 的缩写，其是 Linux kernel 从2.6.23版本引入的一种简洁的 sandboxing 机制。
+//在 Linux 系统里，大量的系统调用（system call）直接暴露给用户态程序。
+//但是，并不是所有的系统调用都被需要，而且不安全的代码滥用系统调用会对系统造成安全威胁。
+//seccomp安全机制能使一个进程进入到一种“安全”运行模式，该模式下的进程只能调用4种系统调用（system call），
+//即 read(), write(), exit() 和 sigreturn()，否则进程便会被终止。
+// 参考URL：https://www.meiwen.com.cn/subject/vzbphftx.html
 type Syscall struct {
 	Name     string   `json:"name,omitempty"`
 	Names    []string `json:"names,omitempty"`
 	Action   Action   `json:"action"`
 	Args     []*Arg   `json:"args"`
-	Comment  string   `json:"comment"`
+	Comment  string   `json:"comment"`// 评论
 	Includes Filter   `json:"includes"`
 	Excludes Filter   `json:"excludes"`
 }
